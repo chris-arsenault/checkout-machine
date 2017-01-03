@@ -1,42 +1,36 @@
+Dir['./*.rb'].each {|file| require file }
+
 class CheckoutMachine
   def initialize
     @balance = 0
     @bonus_card_scanned = false
-    @salsa_counter = 0
-    @chip_counter = 0
+    @items = ScannedItems.new
   end
 
   def scan(sku)
-    update_balance(sku)
-
-    @bonus_card_scanned = true if sku == 000
+    if sku == 000
+      @bonus_card_scanned = true
+    else
+      add_item(sku)
+    end
   end
 
   def total
-    apply_discount
-    @balance
+    @items.total - discount_amount
   end
 
   private
 
-  def apply_discount
-    if @bonus_card_scanned
-      @balance -= 50 * @salsa_counter
-      @balance -= 200 * (@chip_counter/3).floor
-    end
+  def add_item(sku)
+    @items.add(sku)
   end
 
-  def update_balance(sku)
-    if sku == 123
-      @chip_counter += 1
-      @balance += 200
-    elsif sku == 456
-      @salsa_counter += 1
-      @balance += 100
-    elsif sku == 789
-      @balance += 1000
-    elsif sku == 111
-      @balance += 550
+  def discount_amount
+    discount = 0
+    if @bonus_card_scanned
+      discount = 50 * @items.num_salsa
+      discount += 200 * (@items.num_chips/3).floor
     end
+    discount
   end
 end
