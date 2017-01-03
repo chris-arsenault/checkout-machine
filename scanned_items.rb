@@ -1,21 +1,20 @@
 class ScannedItems
-  def initialize()
+  def initialize
     @items = []
-  end
-
-  def total()
-    @items.map(&:cost).reduce(0, :+)
   end
 
   def add(sku)
     @items << Item.new(sku: sku)
   end
 
-  def num_chips
-    @items.count(&:chips?)
+  def total
+    @items.map(&:cost).reduce(0, :+)
   end
-
-  def num_salsa
-    @items.count(&:salsa?)
+  
+  def discount
+    @items.uniq(&:sku)
+      .map{|i| {item: i, count: @items.count{|item| item.sku == i.sku}}}
+      .map{|hash| hash[:item].discount(hash[:count])}
+      .reduce(0, :+)
   end
 end
