@@ -21,7 +21,9 @@ class CheckoutMachine
   private
 
   def discount_amount
-    @bonus_card_scanned ? @items.discount : 0
+    return 0 unless @bonus_card_scanned
+    discounter = Discounter.new(@items)
+    discounter.discount
   end
 
   def add_item(sku)

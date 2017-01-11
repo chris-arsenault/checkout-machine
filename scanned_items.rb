@@ -10,11 +10,8 @@ class ScannedItems
   def total
     @items.map(&:cost).reduce(0, :+)
   end
-  
-  def discount
-    @items.uniq(&:sku)
-      .map{|i| {item: i, count: @items.count{|item| item.sku == i.sku}}}
-      .map{|hash| hash[:item].discount(hash[:count])}
-      .reduce(0, :+)
+
+  def num_items(name)
+    @items.count{|item| item.name == name}
   end
 end
