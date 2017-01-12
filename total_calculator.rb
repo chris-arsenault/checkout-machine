@@ -3,7 +3,7 @@
 # decimal total(array<item>)
 
 # depends on
-# Item.cost
+# Buyable.cost
 
 class TotalCalculator
   def initialize

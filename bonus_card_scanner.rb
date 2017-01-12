@@ -4,11 +4,8 @@
 # array<item> all()
 
 # depends on
-# Item.new
-# Item.bonus_card?
-# Item.sku
-# Item.BONUS_CARD_SKUS
-# ITem.BONUS_CARD_SKU_MAX
+# BonusCard.new
+# BonusCard.bonus_card?
 
 class BonusCardScanner
   def initialize
@@ -16,22 +13,11 @@ class BonusCardScanner
   end
 
   def add(sku)
-    @items << bonus_card_item(sku) if Item::BONUS_CARD_SKUS.include?(sku)
+    @items << BonusCard.new(sku: sku) if BonusCard.bonus_card?(sku)
   end
 
   def all
-    return [] unless @items.any?(&:bonus_card?)
+    return [] if @items.empty?
     [@items.sort_by(&:sku).reverse.first]
-  end
-
-  private
-
-  def bonus_card_item(sku)
-    name = if sku < Item::BONUS_CARD_MAX_SKU / 2
-             'Bonus Card'
-           else
-             'Gold Bonus Card'
-           end
-    Item.new(sku: sku, name: name, cost: 0)
   end
 end

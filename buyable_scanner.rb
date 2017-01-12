@@ -4,8 +4,8 @@
 # array<item> all()
 
 # depends on
-# Item.new
-# Item.BONUS_CARD_SKUS
+# Buyable.new
+# Buyable.buyable?
 
 class BuyableScanner
   def initialize
@@ -13,7 +13,7 @@ class BuyableScanner
   end
 
   def add(sku)
-    @items << Item.new(sku: sku) unless Item::BONUS_CARD_SKUS.include?(sku)
+    @items << Buyable.new(sku: sku) if Buyable.buyable?(sku)
   end
 
   def all

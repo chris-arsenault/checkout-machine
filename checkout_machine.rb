@@ -20,7 +20,7 @@ class CheckoutMachine
     register_scan_handler(BuyableScanner.new)
     register_scan_handler(BonusCardScanner.new)
     register_total_handler(TotalCalculator.new)
-    register_total_handler(DiscountCalculator.new)
+    register_total_handler(BonusCardDiscountCalculator.new)
   end
 
   def scan(sku)
