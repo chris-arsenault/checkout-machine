@@ -7,7 +7,7 @@
 # Item.new
 # Item.BONUS_CARD_SKUS
 
-class ScanHandler
+class BuyableScanner
   def initialize
     @items = []
   end

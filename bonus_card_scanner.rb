@@ -10,7 +10,7 @@
 # Item.BONUS_CARD_SKUS
 # ITem.BONUS_CARD_SKU_MAX
 
-class BonusCardHandler
+class BonusCardScanner
   def initialize
     @items = []
   end
@@ -21,7 +21,7 @@ class BonusCardHandler
 
   def all
     return [] unless @items.any?(&:bonus_card?)
-    [@items.sort(&:sku).first()]
+    [@items.sort_by(&:sku).reverse.first]
   end
 
   private
@@ -30,7 +30,7 @@ class BonusCardHandler
     name = if sku < Item::BONUS_CARD_MAX_SKU / 2
              'Bonus Card'
            else
-             'Premium Bonus Card'
+             'Gold Bonus Card'
            end
     Item.new(sku: sku, name: name, cost: 0)
   end

@@ -5,7 +5,7 @@
 # depends on
 # Item.cost
 
-class TotalHandler
+class TotalCalculator
   def initialize
   end
 

@@ -17,36 +17,23 @@ class CheckoutMachine
 
     # is there a better way to do this?
     # startup config of some kind?
-    register_scan_handler(ScanHandler.new)
-    register_scan_handler(BonusCardHandler.new)
-    register_total_handler(TotalHandler.new)
-    register_total_handler(DiscountHandler.new)
+    register_scan_handler(BuyableScanner.new)
+    register_scan_handler(BonusCardScanner.new)
+    register_total_handler(TotalCalculator.new)
+    register_total_handler(DiscountCalculator.new)
   end
 
   def scan(sku)
-    scan_item(sku)
-  end
-
-  def total
-    combine_items
-    calculate_totals
-  end
-
-  private
-  def combine_items
-    @items = all_items
-  end
-
-  def all_items
-    @scan_handlers.map(&:all).reduce([], :+)
-  end
-
-  def scan_item(sku)
     @scan_handlers.each { |h| h.add(sku) }
   end
 
-  def calculate_totals
-    @total_handlers.map{ |h| h.total(@items) }.reduce(0, :+)
+  def total
+    @total_handlers.map{ |h| h.total(all_items) }.reduce(0, :+)
+  end
+
+  private
+  def all_items
+    @scan_handlers.map(&:all).reduce([], :+)
   end
 
   def register_scan_handler(handler)

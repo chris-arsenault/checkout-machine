@@ -9,6 +9,8 @@ If you have a bonus card, you can scan your bonus card to receive discounts.
 
 Current deals with the bonus card include 1/2 off `salsa` as well as buy 2, get 1 free `chips`.
 
+If you are a gold card member, your discount is increased by 50%
+
 There is a 50 cents surcharge for tobacco products.
 
 All scanned products must make a call to a _remote_ inventory control system that logs the scanned products for inventory control purposes (assume a REST webservice call).  
