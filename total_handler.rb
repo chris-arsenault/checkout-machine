@@ -1,8 +1,15 @@
+# Exposes
+# initialize
+# decimal total(array<item>)
+
+# depends on
+# Item.cost
+
 class TotalHandler
   def initialize
   end
 
-  def total(checkout_machine)
-    checkout_machine.items.map(&:cost).reduce(0, :+)
+  def total(items)
+    items.map(&:cost).reduce(0, :+)
   end
 end

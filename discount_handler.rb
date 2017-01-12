@@ -1,3 +1,13 @@
+# Exposes
+# initialize
+# decimal total(array<item>)
+
+# depends on
+# Item.new
+# Item.bonus_card?
+# Item.name
+
+
 class DiscountHandler
   DISCOUNTS = [
     {name: 'Chips', discount: lambda do |total| 200 * (total/3).floor end },
@@ -6,19 +16,27 @@ class DiscountHandler
   def initialize
   end
 
-  def total(checkout_machine)
-    return 0 unless checkout_machine.bonus_card_scanned
-    @checkout_machine = checkout_machine
-    0 - DISCOUNTS.map { |d| discount_for_item(d) }.reduce(0, :+)
+  def total(items)
+    @items = items
+    return 0 unless has_bonus_card
+    0 - total_discount
   end
 
   private
+
+  def total_discount
+    DISCOUNTS.map { |d| discount_for_item(d) }.reduce(0, :+)
+  end
+
+  def has_bonus_card
+    @items.any?(&:bonus_card?)
+  end
 
   def discount_for_item(discount)
     discount[:discount].call(num_items(discount[:name]))
   end
 
   def num_items(name)
-    @checkout_machine.items.count{|item| item.name == name}
+    @items.count{|item| item.name == name}
   end
 end

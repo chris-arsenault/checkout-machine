@@ -1,27 +1,30 @@
 Dir['./*.rb'].each {|file| require file }
 
+# Exposes
+# initialize
+# void scan(int)
+# float total()
+
+# depends on
+# ScanHandler.scan
+# ScanHandler.all
+# TotalHandler.total
+
 class CheckoutMachine
-  attr_reader :items, :bonus_card_scanned
-
   def initialize
-    @bonus_card_scanned = false
-
     @scan_handlers = []
     @total_handlers = []
 
     # is there a better way to do this?
     # startup config of some kind?
     register_scan_handler(ScanHandler.new)
+    register_scan_handler(BonusCardHandler.new)
     register_total_handler(TotalHandler.new)
     register_total_handler(DiscountHandler.new)
   end
 
   def scan(sku)
-    if sku == 000
-      @bonus_card_scanned = true
-    else
-      scan_item(sku)
-    end
+    scan_item(sku)
   end
 
   def total
@@ -29,18 +32,9 @@ class CheckoutMachine
     calculate_totals
   end
 
-
-  # ScanHandler public interface
-  # void add(int)
-  # list<item> all()
-
-  # TotalHandler public interface
-  # decimal total(checkout_machine)
-
   private
   def combine_items
     @items = all_items
-
   end
 
   def all_items
@@ -52,7 +46,7 @@ class CheckoutMachine
   end
 
   def calculate_totals
-    @total_handlers.map{ |h| h.total(self) }.reduce(0, :+)
+    @total_handlers.map{ |h| h.total(@items) }.reduce(0, :+)
   end
 
   def register_scan_handler(handler)

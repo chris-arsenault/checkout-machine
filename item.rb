@@ -1,4 +1,6 @@
 class Item
+  BONUS_CARD_MAX_SKU = 100
+  BONUS_CARD_SKUS = 0..BONUS_CARD_MAX_SKU
 
   ITEMS = [
     {sku: 123, cost: 200, name: 'Chips'},
@@ -14,5 +16,9 @@ class Item
     @sku = sku || item[:sku]
     @cost = cost || item[:cost]
     @name = name || item[:name]
+  end
+
+  def bonus_card?
+    BONUS_CARD_SKUS.include?(sku)
   end
 end
